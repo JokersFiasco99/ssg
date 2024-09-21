@@ -1,8 +1,8 @@
-from textnode import TextNode
-
+# 🚀 Main entry point of the application
 def main():
-    dummy = TextNode("This is a dummy text", "bold", "https://www.google.com")
-    print(dummy)
+    # TODO: Implement main logic
+    pass
 
+# 🏁 Run the main function if this script is executed
 if __name__ == "__main__":
     main()

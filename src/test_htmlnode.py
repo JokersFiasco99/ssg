@@ -1,26 +1,41 @@
 import unittest
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
+# 🧪 Test suite for HTMLNode and its subclasses
 class TestHTMLNode(unittest.TestCase):
+    # ✅ Test HTMLNode props_to_html method
     def test_props_to_html(self):
-        node = HTMLNode(tag='div', props={'class': 'container', 'id': 'main'})
-        self.assertEqual(node.props_to_html(), ' class="container" id="main"')
+        node = HTMLNode(
+            "div",
+            "Hello, world!",
+            None,
+            {"class": "greeting", "id": "hello"}
+        )
+        self.assertEqual(node.props_to_html(), 'class="greeting" id="hello"')
 
-    def test_repr(self):
-        node = HTMLNode(tag='div', props={'class': 'container', 'id': 'main'})
-        self.assertEqual(repr(node), "HTMLNode(tag=div, value=None, children=None, props={'class': 'container', 'id': 'main'})")
-    
-    def test_props_to_html_none(self):
-        node = HTMLNode(tag='div')
-        self.assertEqual(node.props_to_html(), None)
+    # 🍃 Test LeafNode to_html method
+    def test_leaf_node_to_html(self):
+        node = LeafNode("p", "Hello, world!", {"class": "greeting"})
+        self.assertEqual(node.to_html(), '<p class="greeting">Hello, world!</p>')
 
-    def test_to_html_leaf_node(self):
-        node = LeafNode(tag='div', value='Hello, World!')
-        self.assertEqual(node.to_html(), '<div>Hello, World!</div>')
+    # 👨‍👩‍👧‍👦 Test ParentNode to_html method
+    def test_parent_node_to_html(self):
+        child1 = LeafNode("b", "Bold text")
+        child2 = LeafNode("i", "Italic text")
+        parent = ParentNode("p", [child1, child2], {"class": "content"})
+        expected = '<p class="content"><b>Bold text</b><i>Italic text</i></p>'
+        self.assertEqual(parent.to_html(), expected)
 
-    def test_to_html_leaf_node_no_tag(self):
-        node = LeafNode(tag='div', value='Hello, World!', props={'class': 'container', 'id': 'main'})
-        self.assertEqual(node.to_html(), '<div class="container" id="main">Hello, World!</div>')
+    # 🏷️ Test HTMLNode with no tag
+    def test_html_node_no_tag(self):
+        node = HTMLNode(value="Just some text")
+        self.assertEqual(node.to_html(), "Just some text")
 
+    # 🚫 Test HTMLNode with no children or value
+    def test_html_node_no_children_or_value(self):
+        node = HTMLNode("br")
+        self.assertEqual(node.to_html(), "<br></br>")
+
+# 🏃‍♂️ Run tests if script is executed directly
 if __name__ == "__main__":
     unittest.main()

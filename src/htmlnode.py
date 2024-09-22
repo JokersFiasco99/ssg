@@ -19,19 +19,7 @@ class HTMLNode:
 
     # 🏭 Generate HTML string
     def to_html(self):
-        if self.tag is None:
-            return self.value or ""
-        
-        props = self.props_to_html()
-        props = " " + props if props else ""
-        
-        if self.children:
-            children_html = "".join(child.to_html() for child in self.children)
-            return f"<{self.tag}{props}>{children_html}</{self.tag}>"
-        elif self.value:
-            return f"<{self.tag}{props}>{self.value}</{self.tag}>"
-        else:
-            return f"<{self.tag}{props}></{self.tag}>"
+        raise NotImplementedError("to_html method must be implemented in subclasses")
 
 # 🔗 LeafNode: HTMLNode without children
 class LeafNode(HTMLNode):
@@ -42,6 +30,18 @@ class LeafNode(HTMLNode):
     # 📝 String representation of LeafNode
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, props: {self.props})"
+
+    # 🏭 Generate HTML string for LeafNode
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("LeafNode must have a value")
+        
+        if self.tag is None:
+            return self.value
+        
+        props = self.props_to_html()
+        props = " " + props if props else ""
+        return f"<{self.tag}{props}>{self.value}</{self.tag}>"
 
 # 🧱 ParentNode: HTMLNode with children
 class ParentNode(HTMLNode):

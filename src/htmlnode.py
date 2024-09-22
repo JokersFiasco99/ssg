@@ -52,3 +52,15 @@ class ParentNode(HTMLNode):
     # 📝 String representation of ParentNode
     def __repr__(self):
         return f"ParentNode({self.tag}, children: {len(self.children)}, props: {self.props})"
+
+    # 🏭 Generate HTML string for ParentNode
+    def to_html(self):
+        if self.tag is None:
+            raise ValueError("ParentNode must have a tag")
+        if not self.children:
+            raise ValueError("ParentNode must have at least one child")
+        
+        props = self.props_to_html()
+        props = " " + props if props else ""
+        children_html = "".join(child.to_html() for child in self.children)
+        return f"<{self.tag}{props}>{children_html}</{self.tag}>"

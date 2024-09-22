@@ -28,12 +28,12 @@ class TestHTMLNode(unittest.TestCase):
 
     # 🏷️ Test HTMLNode with no tag
     def test_html_node_no_tag(self):
-        node = HTMLNode(value="Just some text")
+        node = LeafNode(None, "Just some text")
         self.assertEqual(node.to_html(), "Just some text")
 
     # 🚫 Test HTMLNode with no children or value
     def test_html_node_no_children_or_value(self):
-        node = HTMLNode("br")
+        node = LeafNode("br", "")
         self.assertEqual(node.to_html(), "<br></br>")
 
 # 🏃‍♂️ Run tests if script is executed directly

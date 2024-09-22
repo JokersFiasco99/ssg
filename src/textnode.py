@@ -18,27 +18,30 @@ class TextNode:
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
-    # 🔄 Convert TextNode to HTMLNode
-    def text_node_to_html_node(self):
-        # 🅱️ Bold text
-        if self.text_type == "bold":
-            return LeafNode("b", self.text)
-        # 🖋️ Italic text
-        elif self.text_type == "italic":
-            return LeafNode("i", self.text)
-        # 💻 Code text
-        elif self.text_type == "code":
-            return LeafNode("code", self.text)
-        # 🔗 Link text
-        elif self.text_type == "link":
-            if self.url is None:
-                raise ValueError("URL for a link-type TextNode cannot be None")
-            return LeafNode("a", props={"href": self.url})
-        # 🖼️ Image
-        elif self.text_type == "image":
-            if self.url is None:
-                raise ValueError("URL for an image-type TextNode cannot be None")
-            return LeafNode("img", props={"src": self.url})
-        # ❌ Invalid text type
-        else:
-            raise ValueError(f"Invalid text type: {self.text_type}")
+# 🔄 Convert TextNode to HTMLNode
+def text_node_to_html_node(text_node):
+    # 📝 Plain text
+    if text_node.text_type == "text":
+        return LeafNode(None, text_node.text)
+    # 🅱️ Bold text
+    elif text_node.text_type == "bold":
+        return LeafNode("b", text_node.text)
+    # 🖋️ Italic text
+    elif text_node.text_type == "italic":
+        return LeafNode("i", text_node.text)
+    # 💻 Code text
+    elif text_node.text_type == "code":
+        return LeafNode("code", text_node.text)
+    # 🔗 Link text
+    elif text_node.text_type == "link":
+        if text_node.url is None:
+            raise ValueError("URL for a link-type TextNode cannot be None")
+        return LeafNode("a", text_node.text, props={"href": text_node.url})
+    # 🖼️ Image
+    elif text_node.text_type == "image":
+        if text_node.url is None:
+            raise ValueError("URL for an image-type TextNode cannot be None")
+        return LeafNode("img", "", props={"src": text_node.url, "alt": text_node.text})
+    # ❌ Invalid text type
+    else:
+        raise ValueError(f"Invalid text type: {text_node.text_type}")

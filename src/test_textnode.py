@@ -1,5 +1,5 @@
 import unittest
-from textnode import TextNode
+from textnode import TextNode, text_node_to_html_node
 
 # 🧪 Test suite for TextNode
 class TestTextNode(unittest.TestCase):
@@ -20,26 +20,26 @@ class TestTextNode(unittest.TestCase):
     # 🖨️ Test TextNode representation
     def test_repr(self):
         node = TextNode("Hello", "bold")
-        self.assertNotEqual(repr(node), "TextNode(Hello, bold)")
+        self.assertEqual(repr(node), "TextNode(Hello, bold, None)")
 
     # 🔄 Test conversion from TextNode to HTMLNode
     def test_text_node_to_html_node(self):
         node = TextNode("Hello", "bold")
-        html_node = node.text_node_to_html_node()
+        html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.value, "Hello")
         self.assertEqual(html_node.tag, "b")
 
     # ❌ Test invalid text type conversion
     def test_text_node_to_html_node_invalid_text_type(self):
         node = TextNode("Hello", "invalid")
-        with self.assertRaises(Exception):
-            node.text_node_to_html_node()
+        with self.assertRaises(ValueError):
+            text_node_to_html_node(node)
 
     # 🔗 Test link conversion with None URL
     def test_text_node_to_html_node_link_with_none_url(self):
         node = TextNode("Hello", "link")
         with self.assertRaises(ValueError):
-            node.text_node_to_html_node()
+            text_node_to_html_node(node)
 
 # 🏁 Run the tests if this script is executed
 if __name__ == "__main__":

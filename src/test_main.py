@@ -1,5 +1,5 @@
 import unittest
-from main import extract_markdown_images, extract_markdown_links
+from main import extract_markdown_images, extract_markdown_links, extract_title
 
 class TestMarkdownExtraction(unittest.TestCase):
     """Test suite for Markdown extraction functions."""
@@ -31,6 +31,27 @@ class TestMarkdownExtraction(unittest.TestCase):
         text = "A ![image](image.jpg) and a [link](https://example.com)"
         expected = [("link", "https://example.com")]
         self.assertEqual(extract_markdown_links(text), expected)
+
+    def test_extract_title_valid(self):
+        """Test extraction of title from valid Markdown text."""
+        markdown = "# This is a title\nSome content here."
+        self.assertEqual(extract_title(markdown), "This is a title")
+
+    def test_extract_title_multiple_headers(self):
+        """Test extraction of title when multiple headers are present."""
+        markdown = "# Main Title\n## Subtitle\n### Another header"
+        self.assertEqual(extract_title(markdown), "Main Title")
+
+    def test_extract_title_no_h1(self):
+        """Test that an exception is raised when no h1 header is found."""
+        markdown = "## This is not an h1\nSome content."
+        with self.assertRaises(Exception):
+            extract_title(markdown)
+
+    def test_extract_title_empty_markdown(self):
+        """Test that an exception is raised for empty Markdown."""
+        with self.assertRaises(Exception):
+            extract_title("")
 
 if __name__ == '__main__':
     unittest.main()

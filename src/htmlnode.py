@@ -15,6 +15,10 @@ class HTMLNode:
         # Abstract method to be implemented by subclasses
         raise NotImplementedError("to_html method must be implemented in subclasses")
 
+    def add_child(self, child):
+        # Add a child node to this node
+        self.children.append(child)
+
 # Class for leaf nodes (nodes without children)
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
